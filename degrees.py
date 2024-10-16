@@ -103,21 +103,25 @@ def shortest_path(source, target):
     parent_node = Node(source_id, None, None)
     
     idx = 0
-    steps = 0
+    #steps = 0
     path = []
     while True:
-        
         #state (movie_id, person_id)
-        if idx >= len(neighbors_lst):
+        if idx <= len(neighbors_lst):
             s = neighbors_lst[idx]
             (_, person_id) = s #(movie_id, person_id)
             
             if person_id == target_id:
                 path.append(s)
-                for _ in range(steps):
-                    parent_node = parent_node.parent if parent_node.parent is not None else parent_node
+
+                #for _ in range(steps):
+                #   parent_node = parent_node.parent if parent_node.parent is not None else parent_node
+                #   path.append(parent_node.state)
+
+                while (parent_node.parent is not None):
+                    parent_node = parent_node.parent 
                     path.append(parent_node.state)
-                
+ 
                 return path.reverse() 
 
             if not queue_frontier.contains_state(s):
@@ -129,12 +133,12 @@ def shortest_path(source, target):
                 return None
 
             idx = 0 
-            steps += 1
+            #steps += 1
 
             next_node = parent_node = queue_frontier.remove()
             (_, person_id) = next_node.state
-            neighbors = neighbors_for_person(person_id) #what does it returns?
-            neighbors_lst = list(neighbors)
+            neighbors = neighbors_for_person(person_id)
+            neighbors_lst = list(neighbors) if neighbors is not None else []
 
     # TODO
     # raise NotImplementedError
@@ -181,3 +185,187 @@ def neighbors_for_person(person_id):
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
