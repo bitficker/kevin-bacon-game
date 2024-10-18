@@ -91,7 +91,11 @@ def shortest_path(source, target):
     that connect the source to the target.
 
     If no possible path, returns None.
-    """  
+    """ 
+    
+    if source == target:
+        return []
+
     queue_frontier = QueueFrontier()
      
     # FIFO - First In First Out
@@ -107,10 +111,8 @@ def shortest_path(source, target):
         if idx < len(neighbors_lst):
     
             s = neighbors_lst[idx]
-            (movie_id, person_id) = s 
+            (_, person_id) = s 
 
-            print(f"{movies[movie_id]}, {people[person_id]['name']}")
-            
             if person_id == target:
                 return build_path(Node(s, current_node, Node))
 
