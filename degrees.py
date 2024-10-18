@@ -128,10 +128,10 @@ def shortest_path(source, target):
     # raise NotImplementedError
 
 def build_path(node):
-    path = [node]
-    while (node.parent is not None):
-        node = node.parent 
+    path = []
+    while node.parent is not None:
         path.append(node.state)
+        node = node.parent 
                                         
     return path.reverse() 
 
