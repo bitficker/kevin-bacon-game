@@ -84,7 +84,7 @@ def main():
             movie = movies[path[i + 1][0]]["title"]
             print(f"{i + 1}: {person1} and {person2} starred in {movie}")
 
-
+    
 def shortest_path(source, target):
     """
     Returns the shortest list of (movie_id, person_id) pairs
@@ -93,36 +93,21 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """  
     queue_frontier = QueueFrontier()
-    
-    source_id = person_id_for_name(source) # id of the source person (root tree, first person on tree, origin)
-    target_id = person_id_for_name(target)
-    
+     
     # FIFO - First In First Out
-    neighbors = neighbors_for_person(source_id) # [(movie_id, person_id)]
+    neighbors = neighbors_for_person(source) # [(movie_id, person_id)]
     neighbors_lst = list(neighbors)
-    parent_node = Node(source_id, None, None)
+    parent_node = Node(source, None, None)
     
     idx = 0
-    #steps = 0
-    path = []
     while True:
         #state (movie_id, person_id)
         if idx <= len(neighbors_lst):
             s = neighbors_lst[idx]
             (_, person_id) = s #(movie_id, person_id)
             
-            if person_id == target_id:
-                path.append(s)
-
-                #for _ in range(steps):
-                #   parent_node = parent_node.parent if parent_node.parent is not None else parent_node
-                #   path.append(parent_node.state)
-
-                while (parent_node.parent is not None):
-                    parent_node = parent_node.parent 
-                    path.append(parent_node.state)
- 
-                return path.reverse() 
+            if person_id == target:
+                return build_path(Node(s, parent_node, Node))
 
             if not queue_frontier.contains_state(s):
                 queue_frontier.add(Node(s, parent_node, None)) 
@@ -133,7 +118,6 @@ def shortest_path(source, target):
                 return None
 
             idx = 0 
-            #steps += 1
 
             next_node = parent_node = queue_frontier.remove()
             (_, person_id) = next_node.state
@@ -142,6 +126,16 @@ def shortest_path(source, target):
 
     # TODO
     # raise NotImplementedError
+
+def build_path(node):
+    path = [node]
+    while (node.parent is not None):
+        node = node.parent 
+        path.append(node.state)
+                                        
+    return path.reverse() 
+
+
 
 
 def person_id_for_name(name):
