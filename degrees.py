@@ -15,10 +15,7 @@ movies = {}
 
 
 def load_data(directory):
-    """
-    Load data from CSV files into memory.
-    """
-    # Load people
+      
     with open(f"{directory}/people.csv", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -32,7 +29,6 @@ def load_data(directory):
             else:
                 names[row["name"].lower()].add(row["id"])
 
-    # Load movies
     with open(f"{directory}/movies.csv", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -42,7 +38,6 @@ def load_data(directory):
                 "stars": set()
             }
 
-    # Load stars
     with open(f"{directory}/stars.csv", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -58,7 +53,6 @@ def main():
         sys.exit("Usage: python degrees.py [directory]")
     directory = sys.argv[1] if len(sys.argv) == 2 else "large"
 
-    # Load data from files into memory
     print("Loading data...")
     load_data(directory)
     print("Data loaded.")
@@ -86,13 +80,7 @@ def main():
 
     
 def shortest_path(source, target):
-    """
-    Returns the shortest list of (movie_id, person_id) pairs
-    that connect the source to the target.
-
-    If no possible path, returns None.
-    """ 
-    
+      
     if source == target:
         return []
 
@@ -133,8 +121,6 @@ def shortest_path(source, target):
             neighbors = neighbors_for_person(person_id)
             neighbors_lst = list(neighbors) 
 
-    # TODO
-    # raise NotImplementedError
 
 def build_path(node):
     path = []
@@ -143,15 +129,11 @@ def build_path(node):
         node = node.parent 
     
     path.reverse()
-    print(f"path {path}")
     return path 
 
 
 def person_id_for_name(name):
-    """
-    Returns the IMDB id for a person's name,
-    resolving ambiguities as needed.
-    """
+      
     person_ids = list(names.get(name.lower(), set()))
     if len(person_ids) == 0:
         return None
