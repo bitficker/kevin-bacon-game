@@ -102,7 +102,7 @@ def shortest_path(source, target):
     idx = 0
     while True:
         #state (movie_id, person_id)
-        if idx <= len(neighbors_lst):
+        if idx < len(neighbors_lst):
             s = neighbors_lst[idx]
             (_, person_id) = s #(movie_id, person_id)
             
@@ -115,7 +115,7 @@ def shortest_path(source, target):
             idx += 1
         else:
             if queue_frontier.empty():
-                return []
+                return None 
 
             idx = 0 
 
