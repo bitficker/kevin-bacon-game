@@ -96,7 +96,7 @@ def shortest_path(source, target):
      
     # FIFO - First In First Out
     neighbors = neighbors_for_person(source) # [(movie_id, person_id)]
-    neighbors_lst = list(neighbors)
+    neighbors_lst = list(neighbors) if neighbors is not None else []
     parent_node = Node(source, None, None)
     
     idx = 0
