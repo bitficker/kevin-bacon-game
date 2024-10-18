@@ -113,7 +113,8 @@ def shortest_path(source, target):
                 return build_path(Node(s, current_node, Node))
 
             if not queue_frontier.contains_state(s) and not queue_frontier.is_explored(person_id):
-                queue_frontier.add(Node(s, current_node, None)) 
+                queue_frontier.add(Node(s, current_node, None))
+                queue_frontier.explore(person_id)
 
             idx += 1
         else:
