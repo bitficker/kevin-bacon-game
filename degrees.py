@@ -115,7 +115,7 @@ def shortest_path(source, target):
             idx += 1
         else:
             if queue_frontier.empty():
-                return None
+                return []
 
             idx = 0 
 
