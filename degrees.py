@@ -97,20 +97,23 @@ def shortest_path(source, target):
     # FIFO - First In First Out
     neighbors = neighbors_for_person(source) # [(movie_id, person_id)]
     neighbors_lst = list(neighbors) if neighbors is not None else []
-    parent_node = Node(source, None, None)
     
+    current_node = Node(source, None, None)
+
     idx = 0
     while True:
+        
         #state (movie_id, person_id)
         if idx < len(neighbors_lst):
+    
             s = neighbors_lst[idx]
             (_, person_id) = s #(movie_id, person_id)
             
             if person_id == target:
-                return build_path(Node(s, parent_node, Node))
+                return build_path(Node(s, current_node, Node))
 
-            if not queue_frontier.contains_state(s):
-                queue_frontier.add(Node(s, parent_node, None)) 
+            if not queue_frontier.contains_state(s) and not queue_frontier.is_explored(person_id):
+                queue_frontier.add(Node(s, current_node, None)) 
 
             idx += 1
         else:
@@ -119,7 +122,7 @@ def shortest_path(source, target):
 
             idx = 0 
 
-            next_node = parent_node = queue_frontier.remove()
+            next_node = current_node = queue_frontier.remove()
             (_, person_id) = next_node.state
             neighbors = neighbors_for_person(person_id)
             neighbors_lst = list(neighbors) if neighbors is not None else []
