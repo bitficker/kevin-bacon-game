@@ -96,7 +96,7 @@ def shortest_path(source, target):
      
     # FIFO - First In First Out
     neighbors = neighbors_for_person(source) # [(movie_id, person_id)]
-    neighbors_lst = list(neighbors) if neighbors is not None else []
+    neighbors_lst = list(neighbors) 
     
     current_node = Node(source, None, None)
 
@@ -107,7 +107,9 @@ def shortest_path(source, target):
         if idx < len(neighbors_lst):
     
             s = neighbors_lst[idx]
-            (_, person_id) = s #(movie_id, person_id)
+            (movie_id, person_id) = s 
+
+            print(f"{movies[movie_id]}, {people[person_id]['name']}")
             
             if person_id == target:
                 return build_path(Node(s, current_node, Node))
@@ -118,6 +120,7 @@ def shortest_path(source, target):
 
             idx += 1
         else:
+            
             if queue_frontier.empty():
                 return None 
 
@@ -126,7 +129,7 @@ def shortest_path(source, target):
             next_node = current_node = queue_frontier.remove()
             (_, person_id) = next_node.state
             neighbors = neighbors_for_person(person_id)
-            neighbors_lst = list(neighbors) if neighbors is not None else []
+            neighbors_lst = list(neighbors) 
 
     # TODO
     # raise NotImplementedError
@@ -136,10 +139,10 @@ def build_path(node):
     while node.parent is not None:
         path.append(node.state)
         node = node.parent 
-                                        
-    return path.reverse() 
-
-
+    
+    path.reverse()
+    print(f"path {path}")
+    return path 
 
 
 def person_id_for_name(name):
