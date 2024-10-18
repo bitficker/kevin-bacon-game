@@ -1,8 +1,8 @@
 import csv
 import sys
-from types import new_class
+#from types import new_class
 
-from util import Node, StackFrontier, QueueFrontier
+from util import Node, QueueFrontier
 
 # Maps names to a set of corresponding person_ids
 names = {}
@@ -15,10 +15,7 @@ movies = {}
 
 
 def load_data(directory):
-    """
-    Load data from CSV files into memory.
-    """
-    # Load people
+      
     with open(f"{directory}/people.csv", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -32,7 +29,6 @@ def load_data(directory):
             else:
                 names[row["name"].lower()].add(row["id"])
 
-    # Load movies
     with open(f"{directory}/movies.csv", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -42,7 +38,6 @@ def load_data(directory):
                 "stars": set()
             }
 
-    # Load stars
     with open(f"{directory}/stars.csv", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -58,7 +53,6 @@ def main():
         sys.exit("Usage: python degrees.py [directory]")
     directory = sys.argv[1] if len(sys.argv) == 2 else "large"
 
-    # Load data from files into memory
     print("Loading data...")
     load_data(directory)
     print("Data loaded.")
@@ -84,67 +78,62 @@ def main():
             movie = movies[path[i + 1][0]]["title"]
             print(f"{i + 1}: {person1} and {person2} starred in {movie}")
 
-
+    
 def shortest_path(source, target):
-    """
-    Returns the shortest list of (movie_id, person_id) pairs
-    that connect the source to the target.
+      
+    if source == target:
+        return []
 
-    If no possible path, returns None.
-    """  
     queue_frontier = QueueFrontier()
-    
-    source_id = person_id_for_name(source) # id of the source person (root tree, first person on tree, origin)
-    target_id = person_id_for_name(target)
-    
+ 
     # FIFO - First In First Out
-    neighbors = neighbors_for_person(source_id) # [(movie_id, person_id)]
-    neighbors_lst = list(neighbors)
-    parent_node = Node(source_id, None, None)
+    neighbors = neighbors_for_person(source) # [(movie_id, person_id)]
+    neighbors_lst = list(neighbors) 
     
+    current_node = Node(source, None, None)
+
     idx = 0
-    steps = 0
-    path = []
     while True:
         
         #state (movie_id, person_id)
-        if idx >= len(neighbors_lst):
+        if idx < len(neighbors_lst):
+    
             s = neighbors_lst[idx]
-            (_, person_id) = s #(movie_id, person_id)
-            
-            if person_id == target_id:
-                path.append(s)
-                for _ in range(steps):
-                    parent_node = parent_node.parent if parent_node.parent is not None else parent_node
-                    path.append(parent_node.state)
-                
-                return path.reverse() 
+            (_, person_id) = s 
 
-            if not queue_frontier.contains_state(s):
-                queue_frontier.add(Node(s, parent_node, None)) 
+            if person_id == target:
+                return build_path(Node(s, current_node, Node))
+
+            if not queue_frontier.contains_state(s) and not queue_frontier.is_explored(person_id):
+                queue_frontier.add(Node(s, current_node, None))
+                queue_frontier.explore(person_id)
 
             idx += 1
         else:
+            
             if queue_frontier.empty():
-                return None
+                return None 
 
             idx = 0 
-            steps += 1
 
-            next_node = parent_node = queue_frontier.remove()
+            next_node = current_node = queue_frontier.remove()
             (_, person_id) = next_node.state
-            neighbors = neighbors_for_person(person_id) #what does it returns?
-            neighbors_lst = list(neighbors)
+            neighbors = neighbors_for_person(person_id)
+            neighbors_lst = list(neighbors) 
 
-    # TODO
-    # raise NotImplementedError
+
+def build_path(node):
+    path = []
+    while node.parent is not None:
+        path.append(node.state)
+        node = node.parent 
+    
+    path.reverse()
+    return path 
 
 
 def person_id_for_name(name):
-    """
-    Returns the IMDB id for a person's name,
-    resolving ambiguities as needed.
-    """
+      
     person_ids = list(names.get(name.lower(), set()))
     if len(person_ids) == 0:
         return None
@@ -167,10 +156,7 @@ def person_id_for_name(name):
 
 
 def neighbors_for_person(person_id):
-    """
-    Returns (movie_id, person_id) pairs for people
-    who starred with a given person.
-    """
+
     movie_ids = people[person_id]["movies"]
     neighbors = set()
     for movie_id in movie_ids:
@@ -181,3 +167,187 @@ def neighbors_for_person(person_id):
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
