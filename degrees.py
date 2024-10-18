@@ -1,8 +1,8 @@
 import csv
 import sys
-from types import new_class
+#from types import new_class
 
-from util import Node, StackFrontier, QueueFrontier
+from util import Node, QueueFrontier
 
 # Maps names to a set of corresponding person_ids
 names = {}
@@ -85,7 +85,7 @@ def shortest_path(source, target):
         return []
 
     queue_frontier = QueueFrontier()
-     
+ 
     # FIFO - First In First Out
     neighbors = neighbors_for_person(source) # [(movie_id, person_id)]
     neighbors_lst = list(neighbors) 
@@ -156,10 +156,7 @@ def person_id_for_name(name):
 
 
 def neighbors_for_person(person_id):
-    """
-    Returns (movie_id, person_id) pairs for people
-    who starred with a given person.
-    """
+
     movie_ids = people[person_id]["movies"]
     neighbors = set()
     for movie_id in movie_ids:
